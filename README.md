@@ -40,8 +40,8 @@ When you click one of the navigation buttons in Rounds Section for the first tim
 
 ## Screenshots
 
-![best_5_fifa_world_cup_winners](https://github.com/barmat80/RoundRobinGeneratorFX/assets/10819014/63c2f2ce-72ff-4639-a69e-e8e8725df864)
+![best_5_fifa_world_cup_winners](https://github.com/barmat80/RoundRobinGeneratorFX/assets/10819014/5814d200-86de-493b-9742-7be7322c49bc)
 *Best 5 FIFA World Cup Winners (primer-light theme)*
 
-![atp_finals_players_2023](https://github.com/barmat80/RoundRobinGeneratorFX/assets/10819014/9277373b-8f6c-455c-8b84-7a71a58c141a)
+![atp_finals_players_2023](https://github.com/barmat80/RoundRobinGeneratorFX/assets/10819014/c788b88b-f58b-482a-b9a8-e542c96398bd)
 *ATP Finals Players 2023 (cupertino-dark theme)*
