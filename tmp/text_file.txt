@@ -1,0 +1,55 @@
+TEXT FILE FROM DISK
+
+MainViewBuilder -->
+
+private final Consumer<Runnable> chooseFile;
+
+MainViewBuilder
+	param: Consumer<Runnable> chooseFile, 
+	this.chooseFile = chooseFile;
+	
+createTop
+	gridPane.add(createChoice(stackPane.getChildren().get(0), stackPane.getChildren().get(1)), 0, 1);
+	
+
+private Node createChoice(Node n, Node n1) {
+	var choiceBox = new ChoiceBox<String>();
+	choiceBox.setItems(FXCollections.observableArrayList("File", "Manual"));
+	choiceBox.setOnAction(e -> {
+		if (choiceBox.getSelectionModel().getSelectedItem().equals("File")) {
+			n.setVisible(true);
+			n1.setVisible(false);
+		} else {
+			n.setVisible(false);
+			n1.setVisible(true);
+		}
+	});
+	choiceBox.getSelectionModel().selectFirst();
+	return choiceBox;
+}
+
+createStackPane		
+		var textField = new TextField();
+		textField.setPromptText("File");
+		textField.setMaxWidth(300);
+		textField.setMinWidth(300);
+		textField.textProperty().bindBidirectional(model.filePathProperty());
+		
+		var browseBtn = new Button();
+		browseBtn.setText("Browse");
+		browseBtn.setOnAction(e -> {
+		chooseFile.accept(null);
+		});
+		var inputGroup = new InputGroup(textField, browseBtn);
+		inputGroup.setVisible(true);
+		
+		...
+		
+		textArea.setVisible(false);
+		
+		...
+		
+		stackPane.getChildren().add(inputGroup);
+		
+
+		
