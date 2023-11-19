@@ -4,6 +4,7 @@ plugins {
     id 'application'
     id 'eclipse'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '3.0.1'
 }
 
 repositories {
@@ -33,4 +34,26 @@ application {
 	mainClass = project.mainClassName// mainClass is mandatory
 
 	//applicationDefaultJvmArgs =  ["--add-exports", "javafx.base/com.sun.javafx.event=org.controlsfx.controls"]
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = project.mainModule
+        //jvmArgs = defaultValue: the arguments configured in the applicationDefaultJvmArgs property of the application extension
+    }
+	
+   	addExtraDependencies("javafx")
+      	
+    //With the jpackage task you can create a platform-specific installer for your application
+   	jpackage {
+        jpackageHome = 'c:/workspace/tools/jdk-20.0.2+9'
+        installerOptions = ['--win-per-user-install', '--win-dir-chooser']
+        
+        //*** PER DEBUG (fa partire l'exe con la console) ***
+        //imageOptions += ['--win-console']
+        
+        //icon = project.appIco
+        //vendor = project.vendor
+    }
 }
