@@ -32,6 +32,7 @@ Available themes are:
 - [ ] Configurations: time schedule of matchday
 - [ ] Export generated Rounds as a text file
 - [ ] Export generated Rounds as a pdf file
+- [ ] Build for osX and Linux
 
 ## Known Bugs
 
