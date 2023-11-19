@@ -1,4 +1,4 @@
-package com.bm.rrgfx;
+package com.bm.rrgfx.mvci;
 
 import com.bm.rrg.model.Fixture;
 
@@ -47,14 +47,9 @@ public class MainController {
 			mainViewBuilder.resetCards();
 
 			Fixture fixtures = model.getFixtures();
-			// System.out.println(fixtures.getFixturesNum());
 			mainViewBuilder.setGalleryPaneHeader(fixtures.getFixturesNumber());
 			for (int i = 1; i <= fixtures.getFixturesNumber(); i++) {
 				String matchday = "Matchday " + i;
-				// System.out.println(title);
-				// String matches = fixtures.getMatchesAt(i);
-				// System.out.println(matches);
-				// System.out.println("==============");
 				mainViewBuilder.addCard(matchday, fixtures.getMatchListAt(i));
 			}
 

@@ -95,4 +95,8 @@ public class Fixture {
 
 		return sb.toString();
 	}
+
+	public void clear() {
+		fixtures.clear();
+	}
 }

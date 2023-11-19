@@ -1,4 +1,4 @@
-package com.bm.rrgfx;
+package com.bm.rrgfx.mvci;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.bm.rrg.logic.RoundRobinGenerator;
 import com.bm.rrg.model.Competitor;
 import com.bm.rrg.model.Fixture;
+import com.bm.rrgfx.Utility;
 
 public class MainInteractor {
 	private final Model model;
@@ -44,7 +45,7 @@ public class MainInteractor {
 	}
 
 	public void updateModelAfterGeneration() {
-		// System.out.println(fixtures.toString());
+		model.clearFixtures();
 		model.setFixtures(fixtures);
 	}
 }

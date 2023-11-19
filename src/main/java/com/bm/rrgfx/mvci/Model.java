@@ -1,4 +1,4 @@
-package com.bm.rrgfx;
+package com.bm.rrgfx.mvci;
 
 import com.bm.rrg.model.Fixture;
 
@@ -45,5 +45,10 @@ public class Model {
 
 	public void setFixtures(Fixture f) {
 		this.fixtures.set(f);
+	}
+
+	public void clearFixtures() {
+		if (fixtures.get() != null)
+			fixtures.get().clear();
 	}
 }

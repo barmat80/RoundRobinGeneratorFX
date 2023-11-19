@@ -1,4 +1,4 @@
-package com.bm.rrgfx;
+package com.bm.rrgfx.mvci;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,9 @@ import java.util.function.Supplier;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material2.Material2AL;
 import org.kordamp.ikonli.material2.Material2MZ;
-import org.kordamp.ikonli.material2.Material2SharpMZ;
 
 import com.bm.rrg.model.Competitor;
 import com.bm.rrg.model.Match;
-import com.bm.widgets.ToolBar;
 
 import atlantafx.base.controls.Card;
 import atlantafx.base.controls.Tile;
@@ -96,7 +94,7 @@ public class MainViewBuilder implements Builder<Region> {
 		var titleText = new Text("Competitors");
 		titleText.getStyleClass().addAll(Styles.TITLE_3);
 
-		var caption = new Text("Add one Player/Team per line");
+		var caption = new Text("Add one Competitor per line");
 		caption.getStyleClass().add(Styles.TEXT_SMALL);
 
 		var stackPane = buildStackPane();
@@ -118,7 +116,7 @@ public class MainViewBuilder implements Builder<Region> {
 	private StackPane buildStackPane() {
 		var textArea = new TextArea();
 
-		textArea.setPromptText("Add one Player/Team per line");
+		textArea.setPromptText("Add one Competitor per line");
 		textArea.setWrapText(true);
 		textArea.getStyleClass().addAll(Styles.TEXT_SMALL);
 		textArea.managedProperty().bind(textArea.visibleProperty());
@@ -150,23 +148,20 @@ public class MainViewBuilder implements Builder<Region> {
 		var gridPane = new GridPane();
 		gridPane.setHgap(5);// horizontal gap between columns
 		gridPane.setVgap(5);// vertical gap between columns
-		gridPane.setGridLinesVisible(true);
+		// gridPane.setGridLinesVisible(true);
 
-		gridPane.getColumnConstraints().addAll(getColumnsConstraints());
+		gridPane.getColumnConstraints().addAll(getColumnsConstraints(Integer.valueOf(15), Integer.valueOf(70), Integer.valueOf(15)));
 		gridPane.getRowConstraints().addAll(getRowConstraints(centralCellHeight));
 		return gridPane;
 	}
 
-	private List<ColumnConstraints> getColumnsConstraints() {
-		ColumnConstraints col15Perc = new ColumnConstraints();
-		col15Perc.setPercentWidth(15);
-		ColumnConstraints col70Perc = new ColumnConstraints();
-		col70Perc.setPercentWidth(70);
-
+	private List<ColumnConstraints> getColumnsConstraints(Integer... percent) {
 		List<ColumnConstraints> l = new ArrayList<>();
-		l.add(col15Perc);
-		l.add(col70Perc);
-		l.add(col15Perc);
+		for (Integer p : percent) {
+			ColumnConstraints cc = new ColumnConstraints();
+			cc.setPercentWidth(p);
+			l.add(cc);
+		}
 
 		return l;
 	}
@@ -187,9 +182,9 @@ public class MainViewBuilder implements Builder<Region> {
 		var titleText = new Text("Rounds");
 		titleText.getStyleClass().addAll(Styles.TITLE_3);
 
-		ToolBar toolbar = new ToolBar();
-		toolbar.addGeneric("Export as PDF", pdfAction, Material2SharpMZ.PICTURE_AS_PDF, Styles.BUTTON_ICON, Styles.FLAT);
-		toolbar.addGeneric("Export as TXT", txtAction, Material2SharpMZ.TEXT_SNIPPET, Styles.BUTTON_ICON, Styles.FLAT);
+		// ToolBar toolbar = new ToolBar();
+		// toolbar.addGeneric("Export as PDF", pdfAction, Material2SharpMZ.PICTURE_AS_PDF, Styles.BUTTON_ICON, Styles.FLAT);
+		// toolbar.addGeneric("Export as TXT", txtAction, Material2SharpMZ.TEXT_SNIPPET, Styles.BUTTON_ICON, Styles.FLAT);
 
 		var deck = new DeckPane();
 		deck.setAnimationDuration(Duration.millis(350));
@@ -205,35 +200,12 @@ public class MainViewBuilder implements Builder<Region> {
 		galleryPane.add(leftBtn, 0, 1);
 		galleryPane.add(deck, 1, 1);
 		galleryPane.add(rightBtn, 2, 1);
-		galleryPane.add(toolbar, 2, 0);
+		// galleryPane.add(toolbar, 2, 0);
 		GridPane.setValignment(rightBtn, VPos.CENTER);
 		GridPane.setHalignment(rightBtn, HPos.LEFT);
 		GridPane.setValignment(leftBtn, VPos.CENTER);
 		GridPane.setHalignment(leftBtn, HPos.RIGHT);
-		GridPane.setHalignment(toolbar, HPos.LEFT);
-
-		// Competitor c1 = new Competitor("J. Sinner");
-		// Competitor c2 = new Competitor("N. Djokovic");
-		// Competitor c3 = new Competitor("H. Rune");
-		// Competitor c4 = new Competitor("S. Tsitsipas");
-		//
-		// Competitor c5 = new Competitor("C. Alcaraz");
-		// Competitor c6 = new Competitor("D. Medvedev");
-		// Competitor c7 = new Competitor("A. Zverev");
-		// Competitor c8 = new Competitor("A. Rublev");
-		//
-		// Competitor c9 = new Competitor("M. Bargellini");
-		//
-		// ArrayList<Match> l = new ArrayList<Match>();
-		// l.add(new Match(c1, c2));
-		// l.add(new Match(c3, c4));
-		// l.add(new Match(c5, c6));
-		// l.add(new Match(c7, c8));
-		// l.add(new Match(new Competitor("Rest:"), c9));
-
-		// addCard("Matchday 1", l);
-		// addCard("Matchday 2", l);
-		// addCard("Matchday 3", l);
+		// GridPane.setHalignment(toolbar, HPos.LEFT);
 	}
 
 	private Supplier<Node> buildSupplier(DeckPane deck) {
@@ -277,6 +249,21 @@ public class MainViewBuilder implements Builder<Region> {
 		}
 	}
 
+	public void resetCards() {
+		ObservableList<Node> nodes = galleryPane.getChildren();
+		for (Node n : nodes) {
+			if (n instanceof DeckPane dp) {
+				ObservableList<Node> cards = dp.getChildren();
+				ObservableList<Node> cardsToRemove = FXCollections.observableArrayList();
+				for (Node card : cards) {
+					card.setVisible(false);
+					cardsToRemove.add(card);
+				}
+				cards.removeAll(cardsToRemove);
+			}
+		}
+	}
+
 	public void addCard(String cardHeader, ArrayList<Match> l) {
 		Tile header = new Tile(cardHeader, "");
 
@@ -311,33 +298,13 @@ public class MainViewBuilder implements Builder<Region> {
 		AnchorPane.setBottomAnchor(card, 20.0);
 		AnchorPane.setLeftAnchor(card, 40.0);
 
-		ObservableList<Node> nodes = galleryPane.getChildren();
-		for (Node n : nodes) {
-			if (n instanceof DeckPane dp) {
-				dp.getChildren().add(card);
-
-				if (dp.getChildren().size() > 1) {
-					card.setVisible(false);
-				}
-			}
-		}
+		setUnvisible(card);
 	}
 
 	private GridPane buildRow(Competitor competitor1, Competitor competitor2) {
 		var row = new GridPane();
 		// row.setGridLinesVisible(true);
-
-		ColumnConstraints col15Perc = new ColumnConstraints();
-		col15Perc.setPercentWidth(40);
-		ColumnConstraints col70Perc = new ColumnConstraints();
-		col70Perc.setPercentWidth(20);
-		List<ColumnConstraints> lcc = new ArrayList<>();
-		lcc.add(col15Perc);
-		lcc.add(col70Perc);
-		lcc.add(col15Perc);
-		row.getColumnConstraints().addAll(lcc);
-		row.setHgap(5);// horizontal gap between columns
-		row.setVgap(5);// vertical gap between columns
+		row.getColumnConstraints().addAll(getColumnsConstraints(Integer.valueOf(40), Integer.valueOf(20), Integer.valueOf(40)));
 
 		Text l1 = new Text(competitor1.getName());
 		GridPane.setHalignment(l1, HPos.RIGHT);
@@ -346,7 +313,7 @@ public class MainViewBuilder implements Builder<Region> {
 		Text l2 = new Text(competitor2.getName());
 		GridPane.setHalignment(l2, HPos.LEFT);
 
-		System.out.println("found rest: " + (competitor1.isRest() || competitor2.isRest()));
+		// System.out.println("found rest: " + (competitor1.isRest() || competitor2.isRest()));
 		if (competitor1.isRest() || competitor2.isRest()) {
 			l1.getStyleClass().add(Styles.TEXT_MUTED);
 			l2.getStyleClass().add(Styles.TEXT_MUTED);
@@ -364,18 +331,17 @@ public class MainViewBuilder implements Builder<Region> {
 		return row;
 	}
 
-	public void resetCards() {
+	private void setUnvisible(Card card) {
 		ObservableList<Node> nodes = galleryPane.getChildren();
 		for (Node n : nodes) {
 			if (n instanceof DeckPane dp) {
-				ObservableList<Node> cards = dp.getChildren();
-				ObservableList<Node> cardsToRemove = FXCollections.observableArrayList();
-				for (Node card : cards) {
+				dp.getChildren().add(card);
+
+				if (dp.getChildren().size() > 1) {
 					card.setVisible(false);
-					cardsToRemove.remove(card);
 				}
-				cards.removeAll(cardsToRemove);
 			}
 		}
 	}
+
 }

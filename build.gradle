@@ -23,17 +23,10 @@ dependencies {
 	implementation 'org.kordamp.ikonli:ikonli-material2-pack:12.3.1'
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(19)
-    }
-}
-
 ext {
    	// Main class (for manifest entry)
 	mainModule = 'RRG'
-	mainClassName = 'com.bm.rrgfx.RRG'
+	mainClassName = 'com.bm.rrgfx.Main'
 }
 application {
 	mainModule = project.mainModule // name defined in module-info.java
